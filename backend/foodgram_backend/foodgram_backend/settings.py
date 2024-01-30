@@ -74,7 +74,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'foodgram_backend.wsgi.application'
 
 DATABASES = {
-   'default': {
+    'default': {
        'ENGINE': os.getenv('DB', 'django.db.backends.sqlite3'),
        'NAME': os.getenv('POSTGRES_DB', 'django'),
        'USER': os.getenv('POSTGRES_USER', 'django'),
