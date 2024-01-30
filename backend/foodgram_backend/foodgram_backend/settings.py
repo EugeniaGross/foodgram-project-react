@@ -7,7 +7,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-pcw6c&4yfvktvtsp@+^_=if-&1
 
 DEBUG = os.getenv('DEBUG', True)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '158.160.74.54', 'foodgramrecipes.sytes.net']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -25,7 +25,7 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-
+    'SEARCH_PARAM': 'name',
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
