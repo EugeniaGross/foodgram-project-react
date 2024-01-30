@@ -232,6 +232,6 @@ Foodgram - это сайт с рецептами, где любой пользо
 # Технологии
 Django, Django restframework, React, Gunicorn, Nginx, Docker, Docker compose
 # Автор бэкенда
-Евгения Гросс
-GitHub: <https://github.com/EugeniaGross/>
+Евгения Гросс<br>
+GitHub: <https://github.com/EugeniaGross/><br>
 Email: <eug.gross@yandex.ru>
