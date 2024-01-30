@@ -302,9 +302,9 @@ class RecipeViewSet(
         text.setTextOrigin(inch * 2 + 6, inch * 10 + 15)
         text.setFont('Arial', 16)
         for ingredient in ingredients:
-            string = (ingredient['ingredient__name'] +
-                      ' - ' + str(ingredient['amount__sum']) +
-                      ' ' + ingredient['ingredient__measurement_unit'])
+            string = (ingredient['ingredient__name']
+                      + ' - ' + str(ingredient['amount__sum'])
+                      + ' ' + ingredient['ingredient__measurement_unit'])
             text.textLine(string)
         p.drawText(text)
         p.showPage()
