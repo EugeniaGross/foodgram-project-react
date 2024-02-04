@@ -2,58 +2,16 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 
+from foodgram_backend.constants import MAX_LENGTH_RECIPE
+from ingredients.models import Ingredient
+from tags.models import Tag
+
 User = get_user_model()
-
-
-class Ingredient(models.Model):
-    name = models.CharField(
-        'Название',
-        max_length=200,
-    )
-    measurement_unit = models.CharField(
-        'Единицы измерения',
-        max_length=200,
-    )
-
-    class Meta:
-        verbose_name = 'ингредиент'
-        verbose_name_plural = 'Ингредиенты'
-
-    def __str__(self):
-        return self.name
-
-
-class Tag(models.Model):
-    name = models.CharField(
-        'Название',
-        max_length=200,
-    )
-    color = models.CharField(
-        'Цвет в HEX',
-        max_length=7,
-        blank=True,
-        null=True,
-    )
-    slug = models.SlugField(
-        'Уникальный слаг',
-        max_length=200,
-        unique=True,
-        blank=True,
-        null=True,
-    )
-
-    class Meta:
-        verbose_name = 'тег'
-        verbose_name_plural = 'Теги'
-
-    def __str__(self):
-        return self.name
 
 
 class Recipe(models.Model):
     tags = models.ManyToManyField(
         Tag,
-        through='TagRecipe',
         verbose_name='Теги',
         related_name='recipe',
     )
@@ -67,11 +25,11 @@ class Recipe(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name='Автор рецепта',
-        related_name='recipe',
+        related_name='recipes',
     )
     name = models.CharField(
         'Название',
-        max_length=200
+        max_length=MAX_LENGTH_RECIPE
     )
     image = models.ImageField(
         'Изображение',
@@ -82,7 +40,12 @@ class Recipe(models.Model):
     )
     cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления',
-        validators=[MinValueValidator(1)]
+        validators=[
+            MinValueValidator(
+                1,
+                message='Значение не может быть меньше единицы'
+            )
+        ]
     )
     pub_date = models.DateTimeField(
         'Дата публикации',
@@ -96,25 +59,6 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class TagRecipe(models.Model):
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        verbose_name='Рецепт',
-        related_name='recipe'
-    )
-    tag = models.ForeignKey(
-        Tag,
-        on_delete=models.CASCADE,
-        verbose_name='Тег',
-        related_name='tag_in_recipe'
-    )
-
-    class Meta:
-        verbose_name = 'рецепты и их теги'
-        verbose_name_plural = 'Рецепты и их теги'
 
 
 class IngredientsinRecipe(models.Model):
@@ -132,7 +76,12 @@ class IngredientsinRecipe(models.Model):
     )
     amount = models.PositiveSmallIntegerField(
         'Количество ингредиентов',
-        validators=[MinValueValidator(1)]
+        validators=[
+            MinValueValidator(
+                1,
+                message='Значение не может быть меньше единицы'
+            )
+        ]
     )
 
     class Meta:

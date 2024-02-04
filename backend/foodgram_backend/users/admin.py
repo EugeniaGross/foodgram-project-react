@@ -19,5 +19,5 @@ class UserAdmin(UserAdmin):
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'subscription')
+    list_display = ('id', 'user', 'author')
     list_filter = ('user', )

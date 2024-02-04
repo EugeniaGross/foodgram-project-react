@@ -11,8 +11,17 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         with open('data/ingredients.json', encoding='utf-8') as file:
             ingredients_list = json.load(file)
-            for ingredient in ingredients_list:
-                Ingredient.objects.create(
-                    name=ingredient['name'],
-                    measurement_unit=ingredient['measurement_unit'])
+            Ingredient.objects.bulk_create(
+                [
+                    Ingredient(
+                        name=ingredient['name'],
+                        measurement_unit=ingredient['measurement_unit']
+                    )
+                    for ingredient in ingredients_list
+                    if not Ingredient.objects.filter(
+                        name=ingredient['name'],
+                        measurement_unit=ingredient['measurement_unit']
+                    ).exists()
+                ]
+            )
         self.stdout.write('Записи созданы')

@@ -7,7 +7,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-pcw6c&4yfvktvtsp@+^_=if-&1
 
 DEBUG = os.getenv('DEBUG', True)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '158.160.74.54', 'foodgramrecipes.sytes.net']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', [])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -21,7 +21,10 @@ INSTALLED_APPS = [
     'djoser',
     'django_filters',
     'recipes',
-    'users'
+    'users',
+    'api_foodgram',
+    'ingredients',
+    'tags'
 ]
 
 REST_FRAMEWORK = {
@@ -34,8 +37,8 @@ REST_FRAMEWORK = {
 }
 DJOSER = {
     'SERIALIZERS': {
-        "user_create": "api_foodgram.serializers.UserPostSerializer",
-        "user": "api_foodgram.serializers.UserGetSerializer",
+        "user_create": "api_foodgram.serializers.users_serializers.UserCreateSerializer",
+        "user": "api_foodgram.serializers.users_serializers.UserSerializer",
     },
     'PERMISSIONS': {
         "user_list": ["rest_framework.permissions.AllowAny"],

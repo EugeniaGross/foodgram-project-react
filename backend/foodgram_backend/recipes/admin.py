@@ -1,38 +1,18 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
 
-from .models import (Favorite, Ingredient, IngredientsinRecipe, Recipe,
-                     ShoppingCart, Tag, TagRecipe)
-
-
-@admin.register(Ingredient)
-class IngredientAdmin(admin.ModelAdmin):
-    list_display = ('name', 'measurement_unit')
-    search_fields = ('name', )
-    list_filter = ('name', )
-    list_per_page = 20
-
-
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
-    list_display = ('name', 'color', 'slug')
-    search_fields = ('name', )
-    list_filter = ('name', )
-    list_per_page = 20
-
-
-class TagRecipeInLine(admin.StackedInline):
-    model = TagRecipe
-    extra = 1
+from .models import Favorite, IngredientsinRecipe, Recipe, ShoppingCart
 
 
 class IngredientsinRecipeInLine(admin.StackedInline):
     model = IngredientsinRecipe
     extra = 1
+    min_num = 1
 
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    inlines = (TagRecipeInLine, IngredientsinRecipeInLine)
+    inlines = (IngredientsinRecipeInLine, )
     list_display = (
         'name',
         'text',
@@ -45,6 +25,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'pub_date')
     list_filter = ('name', 'author', 'tags')
     list_per_page = 20
+    filter_horizontal = ('tags', )
 
     @admin.display(description='Теги')
     def get_tags(self, obj):
@@ -61,13 +42,6 @@ class RecipeAdmin(admin.ModelAdmin):
     @admin.display(description='Число добавлений в избранное')
     def get_count(self, obj):
         return obj.favorite_recipe.count()
-
-
-@admin.register(TagRecipe)
-class TagRecipeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'tag', 'recipe')
-    list_filter = ('tag', )
-    list_per_page = 20
 
 
 @admin.register(IngredientsinRecipe)
@@ -89,3 +63,6 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'recipe')
     list_filter = ('user', 'recipe')
     list_per_page = 20
+
+
+admin.site.unregister(Group)

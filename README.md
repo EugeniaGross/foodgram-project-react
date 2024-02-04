@@ -7,8 +7,8 @@ Foodgram - это сайт с рецептами, где любой пользо
    ```
 2. В папке foodgram_backend создать .env со следующими данными
    ```
-   POSTGRES_USER = postgres # пользователь 
-   POSTGRES_PASSWORD = postgres # пароль 
+   POSTGRES_USER = postgres # пользователь
+   POSTGRES_PASSWORD = postgres # пароль
    POSTGRES_DB = postgres # имя базы данных
    DB_HOST = db # название контейнера, отвечающего за базу данных
    DB_PORT = 5432 # порт
@@ -28,14 +28,11 @@ Foodgram - это сайт с рецептами, где любой пользо
 4. Cобрать и копировать статику бэкенда, выполнить миграции, наполнить базу данных ингредиентами
    ```
    docker compose exec backend python manage.py collectstatic
-   ```
-   ```
+
    docker compose exec backend cp -r /app/static/. /backend_static/static/
-   ```
-   ```
+
    docker compose exec backend python manage.py migrate
-   ```
-   ```
+
    docker compose exec backend python manage.py load_ingredients
    ```
 # Запуск backend части
@@ -45,8 +42,8 @@ Foodgram - это сайт с рецептами, где любой пользо
    ```
 2. В папке foodgram_backend создать .env со следующими данными
    ```
-   POSTGRES_USER = postgres # пользователь 
-   POSTGRES_PASSWORD = postgres # пароль 
+   POSTGRES_USER = postgres # пользователь
+   POSTGRES_PASSWORD = postgres # пароль
    POSTGRES_DB = postgres # имя базы данных
    DB_HOST = db # название контейнера, отвечающего за базу данных
    DB_PORT = 5432 # порт
@@ -59,11 +56,9 @@ Foodgram - это сайт с рецептами, где любой пользо
 4. Выполнить миграции, наполнить базу данных ингредиентами, запустить сервер
    ```
    python manage.py migrate
-   ```
-   ```
+
    python manage.py load_ingredients
-   ```
-   ```
+
    python manage.py runserver
    ```
 # Работа с API
@@ -220,7 +215,7 @@ Foodgram - это сайт с рецептами, где любой пользо
     },
     ...
 ]
-```  
+```
 ### https://foodgramrecipes.sytes.net/api/ingredients/1/
 ```
 {
