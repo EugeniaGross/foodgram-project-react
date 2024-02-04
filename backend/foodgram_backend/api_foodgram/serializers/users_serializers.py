@@ -22,7 +22,7 @@ class UserSerializer(UserSerializer):
         if self.context.get('request').user.is_anonymous:
             return False
         return Subscription.objects.filter(user=self.context.get(
-                'request').user, subscription=obj).exists()
+                'request').user, author=obj).exists()
 
 
 class UserCreateSerializer(UserCreateSerializer):
@@ -60,18 +60,18 @@ class SubscriptionsSerializer(UserSerializer):
         )
 
     def get_recipes_count(self, obj):
-        return obj.recipe.count()
+        return obj.recipes.count()
 
     def get_recipes(self, obj):
         limit = self.context.get('request').query_params.get('recipe_limit')
         if limit:
             return RecipeInFavoriteOrCartSerializer(
-                obj.recipe.all()[: int(limit)],
+                obj.recipes.all()[: int(limit)],
                 many=True,
                 context={'request': self.context.get('request')}
             ).data
         return RecipeInFavoriteOrCartSerializer(
-            obj.recipe.all(),
+            obj.recipes.all(),
             many=True,
             context={'request': self.context.get('request')}
         ).data
@@ -89,7 +89,7 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
                     'Вы не можете подписаться сами на себя'
                 )
             if Subscription.objects.filter(
-                user=attrs['user'], subscription=attrs['author']
+                user=attrs['user'], author=attrs['author']
             ).exists():
                 raise serializers.ValidationError(
                     'Вы уже подписаны на этого пользователя'
@@ -97,7 +97,7 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
             return attrs
         if self.context.get('request').method == 'DELETE':
             if not Subscription.objects.filter(
-                user=attrs['user'], subscription=attrs['author']
+                user=attrs['user'], author=attrs['author']
             ).exists():
                 raise serializers.ValidationError(
                     'Вы не подписаны на этого пользователя'

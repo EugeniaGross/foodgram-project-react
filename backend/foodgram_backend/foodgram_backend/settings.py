@@ -5,9 +5,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-pcw6c&4yfvktvtsp@+^_=if-&1)tpe_4$5np-zj_z+o&v^p0ok')
 
-DEBUG = os.getenv('DEBUG', True)
+DEBUG = False  # не отключает дебаг os.getenv('DEBUG', False)
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', [])
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '158.160.74.54', 'foodgramrecipes.sytes.net']  # при такой записи не видит хосты os.getenv('ALLOWED_HOSTS', [])
 
 INSTALLED_APPS = [
     'django.contrib.admin',

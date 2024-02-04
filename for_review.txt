@@ -1,2 +1,2 @@
 domain: https://foodgramrecipes.sytes.net/
-superuser: email foodgram@yandex.ru, password foofood_24
+superuser: email foodgram@yandex.ru, password foofood-24

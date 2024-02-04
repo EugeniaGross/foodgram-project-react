@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import F, Q
 from django.utils.translation import gettext_lazy as _
@@ -24,8 +25,16 @@ class User(AbstractUser):
             )
         ]
 
-#    def __str__(self):
-#        return self.username
+    def clean(self):
+        if (self.username == 'me'
+                or self.username == 'Me'
+                or self.username == 'ME'
+                or self.username == 'mE'):
+            raise ValidationError(
+                {
+                    'username': _('Нельзя использовать me')
+                }
+            )
 
 
 class Subscription(models.Model):
@@ -55,3 +64,13 @@ class Subscription(models.Model):
                 check=~Q(user=F('author'))
             )
         ]
+
+    def clean(self):
+        if self.author == self.user:
+            raise ValidationError(
+                {
+                    'author': _(
+                        'Пользователь не может подписаться сам на себя'
+                    )
+                }
+            )
