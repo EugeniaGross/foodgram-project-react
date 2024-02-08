@@ -21,15 +21,13 @@ class UserSerializer(UserSerializer):
         )
 
     def get_is_subscribed(self, obj):
-        # если убираю if вылезает ошибка Field 'id' expected
-        # a number but got <django.contrib.auth.models.AnonymousUser
-        # object at 0x000001D7E18B30D0>
-        if self.context.get('request').user.is_anonymous:
-            return False
-        return Subscription.objects.filter(
-            user=self.context.get('request').user,
-            author=obj
-        ).exists()
+        return (
+            not self.context.get('request').user.is_anonymous
+            and Subscription.objects.filter(
+                user=self.context.get('request').user,
+                author=obj
+            ).exists()
+        )
 
 
 class UserCreateSerializer(UserCreateSerializer):

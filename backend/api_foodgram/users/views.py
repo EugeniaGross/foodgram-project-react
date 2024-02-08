@@ -19,23 +19,11 @@ class UserViewSet(views.UserViewSet):
     pagination_class = UserRecipePagination
 
     def get_permissions(self):
-        # для retrieve в djoser пермишен не прописан
-        if self.action == 'retrieve':
-            self.permission_classes = settings.PERMISSIONS.user_retrieve
+        # retrieve должен быть доступен всем, при изменении перимишена
+        # user на AllowAny открылся доступ для всех к me
+        if self.action == 'me':
+            self.permission_classes = settings.PERMISSIONS.current_user
         return super().get_permissions()
-
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return settings.SERIALIZERS.user_create
-        elif self.action == 'set_password':
-            return settings.SERIALIZERS.set_password
-        elif self.action == 'me':
-            return settings.SERIALIZERS.current_user
-        elif self.action == 'list':
-            return settings.SERIALIZERS.user_list
-        if self.action == 'retrieve':
-            return settings.SERIALIZERS.user
-        return self.serializer_class
 
     def get_queryset(self):
         return User.objects.all()
